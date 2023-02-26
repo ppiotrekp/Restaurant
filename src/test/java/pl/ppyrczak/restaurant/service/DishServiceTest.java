@@ -3,10 +3,11 @@ package pl.ppyrczak.restaurant.service;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import pl.ppyrczak.restaurant.enums.Cuisine;
 import pl.ppyrczak.restaurant.enums.Meal;
 import pl.ppyrczak.restaurant.model.Dish;
@@ -14,10 +15,12 @@ import pl.ppyrczak.restaurant.repository.DishRepository;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 class DishServiceTest {
     @Mock
     private DishRepository dishRepository;
@@ -46,10 +49,10 @@ class DishServiceTest {
         return dish;
     }
 
-    @Test()
+    @Test
     void should_add_dish() {
         Dish dish = createDish();
-        BDDMockito.given(dishRepository.save(dish)).willReturn(dish);
+        given(dishRepository.save(dish)).willReturn(dish);
 
         underTest.addDish(dish);
         verify(dishRepository).save(eq(dish));
