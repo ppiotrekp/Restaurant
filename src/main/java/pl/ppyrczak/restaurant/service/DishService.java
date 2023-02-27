@@ -26,7 +26,20 @@ public class DishService {
     }
 
     public Dish editDish(Long id, Dish dishToUpdate) {
-        return dishRepositor
+        return dishRepository.findById(id)
+                .map(dish -> {
+                    dish.setName(dishToUpdate.getName());
+                    dish.setImageUrl(dishToUpdate.getImageUrl());
+                    dish.setCuisine(dishToUpdate.getCuisine());
+                    dish.setMeal(dishToUpdate.getMeal());
+                    dish.setIngredients(dishToUpdate.getIngredients());
+                    dish.setPrice(dishToUpdate.getPrice());
+                    dish.setDishLimit(dishToUpdate.getDishLimit());
+                    dish.setDescription(dishToUpdate.getDescription());
+                    return dishRepository.save(dish);
+                }).orElseGet(() -> {
+                    return addDish(dishToUpdate);
+                });
     }
 
     public void deleteDish(Long id) {
