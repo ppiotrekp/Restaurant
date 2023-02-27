@@ -84,7 +84,7 @@ class DishControllerTest {
         dishRepository.save(dish);
         dishRepository.save(dish1);
 
-        mockMvc.perform(get(baseUrl + "/dishes"))
+        mockMvc.perform(get(baseUrl + "/dishes?page=0"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
