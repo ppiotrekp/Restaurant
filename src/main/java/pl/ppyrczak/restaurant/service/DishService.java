@@ -3,6 +3,7 @@ package pl.ppyrczak.restaurant.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import pl.ppyrczak.restaurant.exception.runtime.DishNotFoundException;
 import pl.ppyrczak.restaurant.model.Dish;
 import pl.ppyrczak.restaurant.repository.DishRepository;
 
@@ -26,7 +27,7 @@ public class DishService {
 
     public Dish getDish(Long id) {
         return dishRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Dish not found"));
+                .orElseThrow(()-> new DishNotFoundException(id));
     }
 
     public Dish editDish(Long id, Dish dishToUpdate) {
@@ -48,7 +49,7 @@ public class DishService {
 
     public void deleteDish(Long id) {
         if (!dishRepository.findById(id).isPresent())
-            throw new RuntimeException("Dish does not exist");
+            throw new DishNotFoundException(id);
         dishRepository.deleteById(id);
     }
 }
