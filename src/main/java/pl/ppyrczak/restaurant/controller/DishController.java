@@ -5,7 +5,11 @@ import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.restaurant.model.Dish;
 import pl.ppyrczak.restaurant.service.DishService;
 
+import javax.validation.Valid;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,7 +18,8 @@ public class DishController {
     private final DishService dishService;
 
     @PostMapping("/dishes")
-    public Dish addDish(@RequestBody Dish dish) {
+    @ResponseStatus(value = CREATED)
+    public Dish addDish(@Valid @RequestBody Dish dish) {
         return dishService.addDish(dish);
     }
 
@@ -29,12 +34,13 @@ public class DishController {
     }
 
     @PutMapping("/dishes/{id}")
-    public Dish editDish(@PathVariable Long id) {
-        return dishService.editDish(id);
+    public Dish editDish(@PathVariable Long id, @Valid @RequestBody Dish dishToUpdate) {
+        return dishService.editDish(id, dishToUpdate);
     }
 
     @DeleteMapping("/dishes/{id}")
-    public Dish deleteDish(@PathVariable Long id) {
-        return dishService.deleteDish(id);
+    @ResponseStatus(NO_CONTENT)
+    public void deleteDish(@PathVariable Long id) {
+        dishService.deleteDish(id);
     }
 }
