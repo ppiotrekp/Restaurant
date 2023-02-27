@@ -26,7 +26,7 @@ public class DishService {
     }
 
     public Dish editDish(Long id, Dish dishToUpdate) {
-        return null;
+        return dishRepositor
     }
 
     public void deleteDish(Long id) {
