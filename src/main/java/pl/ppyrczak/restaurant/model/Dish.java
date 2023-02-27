@@ -1,9 +1,7 @@
 package pl.ppyrczak.restaurant.model;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.ppyrczak.restaurant.enums.Cuisine;
 import pl.ppyrczak.restaurant.enums.Meal;
 
@@ -16,6 +14,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
