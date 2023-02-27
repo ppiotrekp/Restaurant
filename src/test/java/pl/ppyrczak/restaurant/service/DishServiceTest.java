@@ -101,6 +101,28 @@ class DishServiceTest {
 
     @Test
     void should_edit_dish() {
+        Dish dish = createDish();
+
+        Dish dishToUpdate = new Dish();
+        dishToUpdate.setName("Spaghetti Bolognese");
+        dishToUpdate.setImageUrl("url");
+        dishToUpdate.setCuisine(ITALIAN);
+        dishToUpdate.setMeal(MEAT);
+        dishToUpdate.setIngredients("Pasta, Grana Padano, beef, passata");
+        dishToUpdate.setDishLimit(30);
+        dishToUpdate.setPrice(BigDecimal.valueOf(14));
+        dishToUpdate.setDescription("Tasty pasta");
+
+        given(dishRepository.save(dish)).willReturn(dish);
+        given(dishRepository.findById(dish.getId())).willReturn(Optional.of(dish));
+        underTest.editDish(dish.getId(), dishToUpdate);
+        verify(dishRepository).save(dish);
+
+        assertThat(dish.getDescription()).isEqualTo(dishToUpdate.getDescription());
+        assertThat(dish.getName()).isEqualTo(dishToUpdate.getName());
+        assertThat(dish.getImageUrl()).isEqualTo(dishToUpdate.getImageUrl());
+        assertThat(dish.getMeal()).isEqualTo(dishToUpdate.getMeal());
+        assertThat(dish.getIngredients()).isEqualTo(dishToUpdate.getIngredients());
     }
 
     @Test
