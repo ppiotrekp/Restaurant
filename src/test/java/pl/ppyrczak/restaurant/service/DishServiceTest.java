@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import pl.ppyrczak.restaurant.enums.Meal;
 import pl.ppyrczak.restaurant.model.Dish;
 import pl.ppyrczak.restaurant.repository.DishRepository;
@@ -66,25 +68,11 @@ class DishServiceTest {
 
     @Test
     void should_get_dishes() {
-        Dish dish = createDish();
-        Dish dish1 = new Dish();
-        dish1.setName("Spaghetti Bolognese");
-        dish1.setImageUrl("url");
-        dish1.setCuisine(ITALIAN);
-        dish1.setMeal(MEAT);
-        dish1.setIngredients("Pasta, Grana Padano, beef, passata");
-        dish1.setDishLimit(30);
-        dish1.setPrice(BigDecimal.valueOf(14));
-        dish1.setDescription("Tasty pasta");
+        Pageable pageable = PageRequest.of(0, 5);
 
-        List<Dish> dishes = new ArrayList<>();
-        dishes.add(dish);
-        dishes.add(dish1);
-
-        given(dishRepository.findAll()).willReturn(dishes);
-
-        underTest.getDishes();
-        verify(dishRepository).findAll();
+        given(dishRepository.findAllDishes(pageable)).willReturn(new ArrayList<>());
+        underTest.getDishes(0);
+        verify(dishRepository).findAllDishes(pageable);
     }
 
     @Test

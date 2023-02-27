@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import pl.ppyrczak.restaurant.enums.Cuisine;
 import pl.ppyrczak.restaurant.enums.Meal;
 import pl.ppyrczak.restaurant.model.Dish;
 import pl.ppyrczak.restaurant.repository.DishRepository;
@@ -22,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static pl.ppyrczak.restaurant.enums.Cuisine.ITALIAN;
-import static pl.ppyrczak.restaurant.enums.Meal.MEAT;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -67,6 +65,19 @@ class DishControllerTest {
     }
 
     @Test
+    void should_not_create_dish() throws Exception {
+        Dish dish = new Dish();
+        dish.setName("Pizza");
+        dishRepository.save(dish);
+
+        mockMvc.perform(post(baseUrl + "/dishes")
+                        .content(objectMapper.writeValueAsString(dish))
+                        .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void should_get_dishes() throws Exception {
         Dish dish = createDish();
         Dish dish1 = createDish();
@@ -94,6 +105,16 @@ class DishControllerTest {
         assertThat(dishTest.getDishLimit()).isEqualTo(20);
         assertThat(dishTest.getMeal()).isEqualTo(Meal.MAIN);
     }
+
+    @Test
+    void should_not_get_dish() throws Exception {
+        Dish dish = createDish();
+        dishRepository.save(dish);
+        mockMvc.perform(get(baseUrl + "/dishes/" + dish.getId() + 11))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
 
     @Test
     void should_edit_dish() throws Exception {
@@ -131,5 +152,15 @@ class DishControllerTest {
                 .andExpect(status().isNoContent());
 
         assertEquals(dishRepository.findAll().size(), 0);
+    }
+
+    @Test
+    void should_not_delete_dish() throws Exception {
+        Dish dish = createDish();
+        dishRepository.save(dish);
+
+        mockMvc.perform(delete(baseUrl + "/dishes/" + dish.getId()+1))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 }
