@@ -1,6 +1,5 @@
 package pl.ppyrczak.restaurant.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,13 +16,13 @@ import pl.ppyrczak.restaurant.repository.DishRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static pl.ppyrczak.restaurant.enums.Cuisine.ITALIAN;
 import static pl.ppyrczak.restaurant.enums.Meal.MEAT;
 
