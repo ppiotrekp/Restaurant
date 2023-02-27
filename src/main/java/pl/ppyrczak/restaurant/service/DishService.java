@@ -1,6 +1,7 @@
 package pl.ppyrczak.restaurant.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.restaurant.model.Dish;
 import pl.ppyrczak.restaurant.repository.DishRepository;
@@ -10,14 +11,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DishService {
+    private static final int PAGE_SIZE = 5;
     private final DishRepository dishRepository;
 
     public Dish addDish(Dish dish) {
         return dishRepository.save(dish);
     }
 
-    public List<Dish> getDishes() {
-        return dishRepository.findAll();
+    public List<Dish> getDishes(int page) {
+        return dishRepository.findAllDishes(
+                PageRequest.of(page, PAGE_SIZE)
+        );
     }
 
     public Dish getDish(Long id) {

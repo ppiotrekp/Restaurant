@@ -24,8 +24,9 @@ public class DishController {
     }
 
     @GetMapping("/dishes")
-    public List<Dish> getDishes() {
-        return dishService.getDishes();
+    public List<Dish> getDishes(@RequestParam int page) {
+        int pageNumber = page >= 0 ? page : 0;
+        return dishService.getDishes(pageNumber);
     }
 
     @GetMapping("/dishes/{id}")
