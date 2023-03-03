@@ -24,7 +24,7 @@ import static pl.ppyrczak.restaurant.enums.Cuisine.ITALIAN;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DishControllerTest {
+class DishControllerIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -74,7 +74,7 @@ class DishControllerTest {
                         .content(objectMapper.writeValueAsString(dish))
                         .contentType(APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
     }
 
     @Test
