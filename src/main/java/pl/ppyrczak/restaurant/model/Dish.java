@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,6 +37,9 @@ public class Dish {
     private BigDecimal price;
     @NotBlank(message = "description can not be blank")
     private String description;
+    @OneToMany
+    @JoinColumn(name = "order_id")
+    private List<OrderDish> orderDishes;
 
     public Dish(String imageUrl,
                 String name,
